@@ -7,9 +7,7 @@ using ShopCoreApp.Data.EF.Extensions;
 using ShopCoreApp.Data.Entities;
 using ShopCoreApp.Infrastructure.Interfaces;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace ShopCoreApp.Data.EF
 {
