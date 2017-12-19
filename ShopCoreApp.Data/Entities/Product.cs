@@ -34,6 +34,7 @@ namespace ShopCoreApp.Data.Entities
         public int? ViewCount { get; set; }
         [ForeignKey("CategoryId")]
         public virtual ProductCategory ProductCategory { get; set; }
+        public virtual ICollection<ProductTag> ProductTags { set; get; }
         [StringLength(255)]
         public string Tags { get; set; }
         public string Unit { get; set; }
@@ -46,6 +47,7 @@ namespace ShopCoreApp.Data.Entities
         [Column(TypeName = "varchar")]
         public string SeoAlias { get; set; }
         public string SeoKeywords { get; set; }
+        [StringLength(255)]
         public string SeoDescription { get; set; }
     }
 }

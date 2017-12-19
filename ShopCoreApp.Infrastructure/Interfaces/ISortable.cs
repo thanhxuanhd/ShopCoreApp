@@ -1,6 +1,6 @@
 ﻿namespace ShopCoreApp.Infrastructure.Interfaces
 {
-    public interface ISortTable
+    public interface ISortable
     {
         int SortOrder { get; set; }
     }

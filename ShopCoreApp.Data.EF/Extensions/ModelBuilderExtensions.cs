@@ -1,22 +1,20 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ShopCoreApp.Data.EF.Extensions
 {
     public static class ModelBuilderExtensions
     {
-        public static void AddConfigruation<TEntity>(this ModelBuilder modelBuilder,
-            DbEnityConfiguration<TEntity> enityConfiguration) where TEntity : class
+        public static void AddConfiguration<TEntity>(
+          this ModelBuilder modelBuilder,
+          DbEntityConfiguration<TEntity> entityConfiguration) where TEntity : class
         {
-            modelBuilder.Entity<TEntity>(enityConfiguration.Configure);
+            modelBuilder.Entity<TEntity>(entityConfiguration.Configure);
         }
+    }
 
-        public abstract class DbEnityConfiguration<TEntity> where TEntity : class
-        {
-            public abstract void Configure(EntityTypeBuilder<TEntity> entityTypeBuilder);
-        }
+    public abstract class DbEntityConfiguration<TEntity> where TEntity : class
+    {
+        public abstract void Configure(EntityTypeBuilder<TEntity> entity);
     }
 }

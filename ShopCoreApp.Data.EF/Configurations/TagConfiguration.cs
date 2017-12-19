@@ -1,19 +1,16 @@
-﻿using ShopCoreApp.Data.Entities;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using static ShopCoreApp.Data.EF.Extensions.ModelBuilderExtensions;
-using Microsoft.EntityFrameworkCore;
+using ShopCoreApp.Data.EF.Extensions;
+using ShopCoreApp.Data.Entities;
 
 namespace ShopCoreApp.Data.EF.Configurations
 {
-    public class TagConfiguration : DbEnityConfiguration<Tag>
+    public class TagConfiguration : DbEntityConfiguration<Tag>
     {
-        public override void Configure(EntityTypeBuilder<Tag> entityTypeBuilder)
+        public override void Configure(EntityTypeBuilder<Tag> entity)
         {
-            entityTypeBuilder.Property(c => c.Id).HasMaxLength(50)
-            .IsRequired().HasColumnType("varchar(50)");
+            entity.Property(c => c.Id).HasMaxLength(50)
+                .IsRequired().HasColumnType("varchar(50)");
         }
     }
 }
