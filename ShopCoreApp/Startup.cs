@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -6,7 +7,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ShopCoreApp.Data;
 using ShopCoreApp.Data.EF;
+using ShopCoreApp.Data.EF.Repositories;
 using ShopCoreApp.Data.Entities;
+using ShopCoreApp.Service.Implementation;
+using ShopCoreApp.Service.Interfaces;
 using ShopCoreApp.Services;
 
 namespace ShopCoreApp
@@ -39,9 +43,19 @@ namespace ShopCoreApp
 
             // Register no-op EmailSender used by account confirmation and password reset during development
             // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=532713
+            // Config User
             services.AddScoped<UserManager<AppUser>, UserManager<AppUser>>();
             services.AddScoped<RoleManager<AppRole>, RoleManager<AppRole>>();
+        
             services.AddSingleton<IEmailSender, EmailSender>();
+            // Auto Mapper Config For Asp.Net Core
+            services.AddSingleton(Mapper.Configuration);
+            services.AddScoped<IMapper>(sp=>new Mapper(sp.GetRequiredService<AutoMapper.IConfigurationProvider>(),sp.GetService));
+            // Config Repository
+            services.AddTransient<IProductCategoryRepository, ProductCategoryRepository>();
+            // Config Service
+            services.AddTransient<IProductCategoryService, ProductCategoryService>();
+            // Config DbInitializer
             services.AddTransient<DbInitializer>();
         }
 

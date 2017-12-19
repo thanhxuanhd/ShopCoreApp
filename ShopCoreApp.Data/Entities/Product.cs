@@ -13,6 +13,66 @@ namespace ShopCoreApp.Data.Entities
     [Table("Products")]
     public class Product : DomainEntity<int>, ISwitchable, IDateTracking, IHasSeoMetaData
     {
+        public Product()
+        {
+
+        }
+        public Product(string name, int categoryId, string thumbnailImage,
+            decimal price, decimal originalPrice, decimal? promotionPrice,
+            string description, string content, bool? homeFlag, bool? hotFlag,
+            string tags, string unit, Status status, string seoPageTitle,
+            string seoAlias, string seoMetaKeyword,
+            string seoMetaDescription)
+        {
+            Name = name;
+            CategoryId = categoryId;
+            Image = thumbnailImage;
+            Price = price;
+            OriginalPrice = originalPrice;
+            PromotionPrice = promotionPrice;
+            Description = description;
+            Content = content;
+            HomeFlag = homeFlag;
+            HotFlag = hotFlag;
+            Tags = tags;
+            Unit = unit;
+            Status = status;
+            SeoPageTitle = seoPageTitle;
+            SeoAlias = seoAlias;
+            SeoKeywords = seoMetaKeyword;
+            SeoDescription = seoMetaDescription;
+            ProductTags = new List<ProductTag>();
+
+        }
+
+        public Product(int id, string name, int categoryId, string thumbnailImage,
+             decimal price, decimal originalPrice, decimal? promotionPrice,
+             string description, string content, bool? homeFlag, bool? hotFlag,
+             string tags, string unit, Status status, string seoPageTitle,
+             string seoAlias, string seoMetaKeyword,
+             string seoMetaDescription)
+        {
+            Id = id;
+            Name = name;
+            CategoryId = categoryId;
+            Image = thumbnailImage;
+            Price = price;
+            OriginalPrice = originalPrice;
+            PromotionPrice = promotionPrice;
+            Description = description;
+            Content = content;
+            HomeFlag = homeFlag;
+            HotFlag = hotFlag;
+            Tags = tags;
+            Unit = unit;
+            Status = status;
+            SeoPageTitle = seoPageTitle;
+            SeoAlias = seoAlias;
+            SeoKeywords = seoMetaKeyword;
+            SeoDescription = seoMetaDescription;
+            ProductTags = new List<ProductTag>();
+
+        }
         [StringLength(255)]
         [Required]
         public string Name { get; set; }
@@ -30,7 +90,7 @@ namespace ShopCoreApp.Data.Entities
         public string Description { get; set; }
         public string Content { get; set; }
         public bool? HomeFlag { get; set; }
-        public bool HotFlag { get; set; }
+        public bool? HotFlag { get; set; }
         public int? ViewCount { get; set; }
         [ForeignKey("CategoryId")]
         public virtual ProductCategory ProductCategory { get; set; }
