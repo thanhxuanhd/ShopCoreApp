@@ -104,7 +104,7 @@ namespace ShopCoreApp.Data.Entities
         [StringLength(255)]
         public string SeoPageTitle { get; set; }
         [StringLength(255)]
-        [Column(TypeName = "varchar")]
+        [Column(TypeName = "varchar(255)")]
         public string SeoAlias { get; set; }
         public string SeoKeywords { get; set; }
         [StringLength(255)]

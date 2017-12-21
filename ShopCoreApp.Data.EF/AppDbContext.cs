@@ -2,11 +2,14 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.Configuration;
 using ShopCoreApp.Data.EF.Configurations;
 using ShopCoreApp.Data.EF.Extensions;
 using ShopCoreApp.Data.Entities;
 using ShopCoreApp.Infrastructure.Interfaces;
 using System;
+using System.IO;
 using System.Linq;
 
 namespace ShopCoreApp.Data.EF
@@ -79,7 +82,10 @@ namespace ShopCoreApp.Data.EF
             builder.AddConfiguration(new FooterConfiguration());
             builder.AddConfiguration(new ProductTagConfiguration());
             builder.AddConfiguration(new SystemConfigConfiguration());
+            builder.AddConfiguration(new FunctionConfiguration());
             builder.AddConfiguration(new AdvertistmentPositionConfiguration());
+            builder.AddConfiguration(new AdvertistmentPagesConfiguration());
+            builder.AddConfiguration(new AnnouncementConfiguration());
         }
 
         public override int SaveChanges()
@@ -99,6 +105,20 @@ namespace ShopCoreApp.Data.EF
                 }
             }
             return base.SaveChanges();
+        }
+    }
+
+    public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
+    {
+        public AppDbContext CreateDbContext(string[] args)
+        {
+            IConfiguration configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json").Build();
+            var builder = new DbContextOptionsBuilder<AppDbContext>();
+            var connectionString = configuration.GetConnectionString("DefaultConnection");
+            builder.UseSqlServer(connectionString);
+            return new AppDbContext(builder.Options);
         }
     }
 }

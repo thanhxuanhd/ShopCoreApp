@@ -12,7 +12,7 @@ namespace ShopCoreApp.Data.Entities
         public virtual Product Product { get; set; }
 
         [ForeignKey("TagId")]
-        [Column(TypeName = "varchar")]
+        [Column(TypeName = "varchar(255)")]
         public virtual Tag Tag { get; set; }
     }
 }

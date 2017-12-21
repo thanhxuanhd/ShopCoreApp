@@ -78,7 +78,7 @@ namespace ShopCoreApp.Data.Entities
         public string SeoPageTitle { get; set; }
 
         [MaxLength(256)]
-        [Column(TypeName = "varchar")]
+        [Column(TypeName = "varchar(256)")]
         public string SeoAlias { get; set; }
 
         [MaxLength(256)]

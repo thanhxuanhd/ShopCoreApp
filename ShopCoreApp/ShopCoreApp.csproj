@@ -5,6 +5,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="6.2.2" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="3.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.1" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.1" PrivateAssets="All" />
@@ -20,8 +21,5 @@
     <ProjectReference Include="..\ShopCoreApp.Infrastructure\ShopCoreApp.Infrastructure.csproj" />
     <ProjectReference Include="..\ShopCoreApp.Service\ShopCoreApp.Service.csproj" />
     <ProjectReference Include="..\ShopCoreApp.Utilities\ShopCoreApp.Utilities.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Controllers\" />
   </ItemGroup>
 </Project>

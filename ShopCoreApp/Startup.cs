@@ -12,6 +12,7 @@ using ShopCoreApp.Data.Entities;
 using ShopCoreApp.Service.Implementation;
 using ShopCoreApp.Service.Interfaces;
 using ShopCoreApp.Services;
+using System;
 
 namespace ShopCoreApp
 {
@@ -33,6 +34,23 @@ namespace ShopCoreApp
             services.AddIdentity<AppUser, AppRole>()
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
+            // Configure Identity
+            services.Configure<IdentityOptions>(options =>
+            {
+                // Password settings
+                options.Password.RequireDigit = true;
+                options.Password.RequiredLength = 6;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireLowercase = false;
+
+                // Lockout settings
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
+                options.Lockout.MaxFailedAccessAttempts = 10;
+
+                // User settings
+                options.User.RequireUniqueEmail = true;
+            });
 
             services.AddMvc()
                 .AddRazorPagesOptions(options =>
@@ -46,11 +64,12 @@ namespace ShopCoreApp
             // Config User
             services.AddScoped<UserManager<AppUser>, UserManager<AppUser>>();
             services.AddScoped<RoleManager<AppRole>, RoleManager<AppRole>>();
-        
+
             services.AddSingleton<IEmailSender, EmailSender>();
             // Auto Mapper Config For Asp.Net Core
+            services.AddAutoMapper();
             services.AddSingleton(Mapper.Configuration);
-            services.AddScoped<IMapper>(sp=>new Mapper(sp.GetRequiredService<AutoMapper.IConfigurationProvider>(),sp.GetService));
+            services.AddScoped<IMapper>(sp => new Mapper(sp.GetRequiredService<AutoMapper.IConfigurationProvider>(), sp.GetService));
             // Config Repository
             services.AddTransient<IProductCategoryRepository, ProductCategoryRepository>();
             // Config Service
@@ -84,7 +103,7 @@ namespace ShopCoreApp
                     template: "{controller}/{action=Index}/{id?}");
             });
 
-            dbInitializer.Seed().Wait();
+            //dbInitializer.Seed().Wait();
         }
     }
 }
