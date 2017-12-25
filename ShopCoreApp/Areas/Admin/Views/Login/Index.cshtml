@@ -1,0 +1,77 @@
+﻿@{
+    Layout = null;
+    var year = DateTime.Now.Year;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Đăng nhập Admin</title>
+
+    <!-- Bootstrap -->
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="~/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="~/lib/nprogress/nprogress.css" rel="stylesheet">
+    <!-- Animate.css -->
+    <link href=".~/lib/animate.css/animate.min.css" rel="stylesheet">
+    <link href="~/lib/notifyjs/dist/styles/metro/notify-metro.css" rel="stylesheet" />
+    <!-- Custom Theme Style -->
+    <link href="~/admin/css/custom.css" rel="stylesheet">
+</head>
+
+<body class="login">
+    <div>
+        <div class="login_wrapper">
+            <div class="animate form login_form">
+                <section class="login_content">
+                    <form asp-action="Login" asp-controller="Login">
+                        <h1>Đăng nhập</h1>
+                        <div>
+                            <input type="text" class="form-control" placeholder="Tên đăng nhập" required="" name="userName" id="txtUserName" />
+                        </div>
+                        <div>
+                            <input type="password" class="form-control" placeholder="Password" required="" name="password" id="txtPassword" />
+                        </div>
+                        <div>
+                            <button class="btn btn-default submit" href="#" id="btnSubmit">Đăng nhập</button>
+                            <a class="reset_pass" href="#">Quên mật khẩu</a>
+                        </div>
+
+                        <div class="clearfix"></div>
+
+                        <div class="separator">
+                            <div>
+                                <h1><i class="fa fa-paw"></i> Admin Dashboard</h1>
+                                <p>©@year All Rights Reserved</p>
+                            </div>
+                        </div>
+                    </form>
+                </section>
+            </div>
+        </div>
+    </div>
+    <!--jquery-->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    <!--bootstrap-->
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <!--notifyjs-->
+    <script src="~/lib/notifyjs/dist/notify.js"></script>
+    <script src="~/lib/notifyjs/dist/styles/metro/notify-metro.js"></script>
+    <!--site-->
+    <script src="~/app/shared/site.js" asp-append-version="true"></script>
+    <script src="~/app/controllers/login/index.js"></script>
+    <script>
+        loginController.initialize();
+    </script>
+</body>
+</html>
+

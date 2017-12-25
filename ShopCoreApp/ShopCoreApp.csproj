@@ -2,6 +2,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <UserSecretsId>aspnet-ShopCoreApp-E816BA94-52A3-4A5A-9CA6-CB43D2D6493A</UserSecretsId>
+    <TypeScriptToolsVersion>2.6</TypeScriptToolsVersion>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="6.2.2" />

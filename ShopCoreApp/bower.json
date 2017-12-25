@@ -24,6 +24,7 @@
     "flot.orderbars": "^1.0.0",
     "flot.curvedlines": "^1.1.1",
     "notifyjs": "^0.4.2",
-    "bootbox.js": "bootbox#^4.4.0"
+    "bootbox.js": "bootbox#^4.4.0",
+    "animate.css": "^3.5.2"
   }
 }
