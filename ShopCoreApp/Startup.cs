@@ -5,10 +5,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using ShopCoreApp.Data;
+using Microsoft.Extensions.Logging;
 using ShopCoreApp.Data.EF;
 using ShopCoreApp.Data.EF.Repositories;
 using ShopCoreApp.Data.Entities;
+using ShopCoreApp.Data.IRepositories;
+using ShopCoreApp.Helpers;
 using ShopCoreApp.Service.Implementation;
 using ShopCoreApp.Service.Interfaces;
 using ShopCoreApp.Services;
@@ -65,6 +67,9 @@ namespace ShopCoreApp
             services.AddScoped<UserManager<AppUser>, UserManager<AppUser>>();
             services.AddScoped<RoleManager<AppRole>, RoleManager<AppRole>>();
 
+            // Add User Claim
+            services.AddScoped<IUserClaimsPrincipalFactory<AppUser>, CustomClaimsPrincipalFactory>();
+
             services.AddSingleton<IEmailSender, EmailSender>();
             // Auto Mapper Config For Asp.Net Core
             services.AddAutoMapper();
@@ -72,14 +77,16 @@ namespace ShopCoreApp
             services.AddScoped<IMapper>(sp => new Mapper(sp.GetRequiredService<AutoMapper.IConfigurationProvider>(), sp.GetService));
             // Config Repository
             services.AddTransient<IProductCategoryRepository, ProductCategoryRepository>();
+            services.AddTransient<IFunctionRepository, FunctionRepository>();
             // Config Service
             services.AddTransient<IProductCategoryService, ProductCategoryService>();
+            services.AddTransient<IFunctionService, FunctionService>();
             // Config DbInitializer
             services.AddTransient<DbInitializer>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, DbInitializer dbInitializer)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, DbInitializer dbInitializer, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
             {
@@ -103,7 +110,7 @@ namespace ShopCoreApp
                     template: "{controller}/{action=Index}/{id?}");
                 routes.MapRoute(
                    name: "areaAdmin",
-                   template: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+                   template: "{area:exists}/{controller=Login}/{action=Index}/{id?}");
             });
 
             //dbInitializer.Seed().Wait();

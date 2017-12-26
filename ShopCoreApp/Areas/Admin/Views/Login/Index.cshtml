@@ -1,4 +1,5 @@
-﻿@{
+﻿@model Models.Account.LoginViewModel
+@{
     Layout = null;
     var year = DateTime.Now.Year;
 }
@@ -31,16 +32,20 @@
         <div class="login_wrapper">
             <div class="animate form login_form">
                 <section class="login_content">
-                    <form asp-action="Login" asp-controller="Login">
+                    <form asp-action="Index" asp-controller="Admin/Login" method="post">
+                        @Html.AntiForgeryToken()
                         <h1>Đăng nhập</h1>
-                        <div>
-                            <input type="text" class="form-control" placeholder="Tên đăng nhập" required="" name="userName" id="txtUserName" />
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div> 
+                        <div class="form-group">
+                            <span asp-validation-for="UserName" class="text-danger"></span>
+                            <input type="text" class="form-control" placeholder="Tên đăng nhập" required="" asp-for="UserName" name="UserName" id="txtUserName" />
+                        </div>
+                        <div class="form-group">
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                            <input type="password" class="form-control" placeholder="Password" required="" name="Password" id="txtPassword" asp-for="Password" />
                         </div>
                         <div>
-                            <input type="password" class="form-control" placeholder="Password" required="" name="password" id="txtPassword" />
-                        </div>
-                        <div>
-                            <button class="btn btn-default submit" href="#" id="btnSubmit">Đăng nhập</button>
+                            <button class="btn btn-default submit" type="submit" id="btnSubmit">Đăng nhập</button>
                             <a class="reset_pass" href="#">Quên mật khẩu</a>
                         </div>
 
@@ -60,7 +65,7 @@
     <!--jquery-->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
-    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
     <!--bootstrap-->
     <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
     <!--notifyjs-->
@@ -68,7 +73,7 @@
     <script src="~/lib/notifyjs/dist/styles/metro/notify-metro.js"></script>
     <!--site-->
     <script src="~/app/shared/site.js" asp-append-version="true"></script>
-    <script src="~/app/controllers/login/index.js"></script>
+    <script src="~/app/controllers/login/index.js" asp-append-version="true"></script>
     <script>
         loginController.initialize();
     </script>

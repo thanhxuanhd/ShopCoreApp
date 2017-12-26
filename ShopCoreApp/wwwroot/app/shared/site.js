@@ -64,7 +64,7 @@
             return moment(dateTime).format(formatDate);
         }
         return moment(dateTime).format('DD/MM/YYYY');
-    },
+    };
     var dateTimeFormatJson = function (dateTime, formatDateTime) {
         if (dateTime) {
             return '';

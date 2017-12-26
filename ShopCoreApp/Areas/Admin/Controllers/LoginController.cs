@@ -18,7 +18,7 @@ namespace ShopCoreApp.Areas.Admin.Controllers
 
         #region Contructor
 
-        public LoginController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, ILogger logger)
+        public LoginController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, ILogger<LoginController> logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -35,7 +35,7 @@ namespace ShopCoreApp.Areas.Admin.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Authen(LoginViewModel model)
+        public async Task<IActionResult> Index(LoginViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -45,21 +45,24 @@ namespace ShopCoreApp.Areas.Admin.Controllers
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
-                    return new OkObjectResult(new GenericResult(true));
+                    ModelState.Clear();
+                    return Redirect("Admin/Home/Index");
                 }
                 if (result.IsLockedOut)
                 {
                     _logger.LogWarning("User account locked out.");
-                    return new ObjectResult(new GenericResult(false, "Tài khoản đã bị khoá"));
+                    ModelState.AddModelError("", "Tài khoản bị khóa");
+                    return View(model);
                 }
                 else
                 {
-                    return new ObjectResult(new GenericResult(false, "Đăng nhập sai"));
+                    ModelState.AddModelError("", "Mật khẩu không đúng");
+                    return View(model);
                 }
             }
 
             // If we got this far, something failed, redisplay form
-            return new ObjectResult(new GenericResult(false, model));
+            return View(model);
         }
     }
 }
