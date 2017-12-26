@@ -8,10 +8,10 @@ namespace ShopCoreApp.Models.Account
 {
     public class LoginViewModel
     {
-        [Required]
+        [Required(ErrorMessage ="Tên đăng nhập bắt buộc")]
         public string UserName { get; set; }
 
-        [Required]
+        [Required(ErrorMessage ="Mật khẩu bắt buộc")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
