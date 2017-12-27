@@ -32,6 +32,13 @@ namespace ShopCoreApp.Areas.Admin.Controllers
             var model = _productService.GetAll();
             return new ObjectResult(model);
         }
+
+        [HttpGet]
+        public IActionResult GetAllPaging(int? categoryId, string keyword, int page = 1, int pageSize = 20)
+        {
+            var model = _productService.GetAllPaging(categoryId, keyword, page, pageSize);
+            return new ObjectResult(model);
+        }
         #endregion
     }
 }
