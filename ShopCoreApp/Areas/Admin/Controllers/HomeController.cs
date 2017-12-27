@@ -6,7 +6,7 @@ namespace ShopCoreApp.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Authorize]
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         public IActionResult Index()
         {

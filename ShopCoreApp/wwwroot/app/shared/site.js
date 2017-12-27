@@ -57,16 +57,17 @@
         });
     }
     var dateFormatJson = function (dateTime, formatDate) {
-        if (dateTime) {
+        if (!dateTime) {
             return '';
         }
         if (formatDate) {
             return moment(dateTime).format(formatDate);
         }
+
         return moment(dateTime).format('DD/MM/YYYY');
     };
     var dateTimeFormatJson = function (dateTime, formatDateTime) {
-        if (dateTime) {
+        if (!dateTime) {
             return '';
         }
         if (formatDate) {
