@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ShopCoreApp.Data.Entities;
+using ShopCoreApp.Service.ViewModels;
 using ShopCoreApp.Service.ViewModels.Function;
 using ShopCoreApp.Service.ViewModels.ProductCategory;
 
@@ -11,6 +12,7 @@ namespace ShopCoreApp.Service.AutoMapper
         {
             CreateMap<ProductCategory, ProductCategoryViewModel>();
             CreateMap<Function, FunctionViewModel>();
+            CreateMap<Product, ProductViewModel>();
         }
     }
 }
