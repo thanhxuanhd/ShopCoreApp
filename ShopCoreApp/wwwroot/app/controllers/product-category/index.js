@@ -28,6 +28,7 @@
                     var treeArray = app.unflattern(data);
                     $('#treeProductCategories').tree({
                         data: treeArray,
+                        dnd: true
                     });
                 }
             },
