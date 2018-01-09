@@ -25,7 +25,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3. Domain", "3. Domain", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4. Infrastructure", "4. Infrastructure", "{4731B0D2-9F21-43FE-B682-88170C5C7C28}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopCoreApp.Data.MDEF", "ShopCoreApp.Data.MDEF\ShopCoreApp.Data.MDEF.csproj", "{10ECD80D-FE1E-4F2D-9691-531C1E2E1105}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShopCoreApp.Data.MDEF", "ShopCoreApp.Data.MDEF\ShopCoreApp.Data.MDEF.csproj", "{10ECD80D-FE1E-4F2D-9691-531C1E2E1105}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
