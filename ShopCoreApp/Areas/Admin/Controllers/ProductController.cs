@@ -7,11 +7,13 @@ namespace ShopCoreApp.Areas.Admin.Controllers
     {
         #region Variables
         private readonly IProductService _productService;
+        private readonly IProductCategoryService _productCategoryService;
         #endregion
         #region Ctor
-        public ProductController(IProductService productService)
+        public ProductController(IProductService productService, IProductCategoryService productCategoryService)
         {
             _productService = productService;
+            _productCategoryService = productCategoryService;
         }
         #endregion Ctor
 
@@ -31,6 +33,13 @@ namespace ShopCoreApp.Areas.Admin.Controllers
         {
             var model = _productService.GetAll();
             return new ObjectResult(model);
+        }
+
+        [HttpGet]
+        public IActionResult GetAllCategory()
+        {
+            var categories = _productCategoryService.GetAll();
+            return new ObjectResult(categories);
         }
 
         [HttpGet]

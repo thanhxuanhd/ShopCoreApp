@@ -12,6 +12,7 @@ using ShopCoreApp.Data.EF.Repositories;
 using ShopCoreApp.Data.Entities;
 using ShopCoreApp.Data.IRepositories;
 using ShopCoreApp.Helpers;
+using ShopCoreApp.Infrastructure.Interfaces;
 using ShopCoreApp.Service.Implementation;
 using ShopCoreApp.Service.Interfaces;
 using ShopCoreApp.Services;
@@ -76,6 +77,9 @@ namespace ShopCoreApp
             services.AddAutoMapper();
             services.AddSingleton(Mapper.Configuration);
             services.AddScoped<IMapper>(sp => new Mapper(sp.GetRequiredService<AutoMapper.IConfigurationProvider>(), sp.GetService));
+            // Unit Of Work
+            services.AddTransient(typeof(IUnitOfWork), typeof(EFUnitOfWork));
+            services.AddTransient(typeof(IRepository<,>), typeof(EFRepository<,>));
             // Config Repository
             services.AddTransient<IProductCategoryRepository, ProductCategoryRepository>();
             services.AddTransient<IFunctionRepository, FunctionRepository>();

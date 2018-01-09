@@ -1,7 +1,9 @@
 ﻿var productController = (function () {
     var initailize = function () {
+        loadCategorys();
         loadData();
-    }
+        registerEvent();
+    };
 
     var registerEvent = function () {
         $('#ddlShowPage').on('change', function () {
@@ -9,15 +11,44 @@
             app.configs.pageIndex = 1;
             loadData(true);
         });
-    }
+        $('#btnSearch').on('click', function () {
+            loadData();
+        });
+        $('#txtKeyword').on('keypress', function (e) {
+            if (e.which === 13) {
+                loadData();
+            }
+        });
+    };
+    var loadCategorys = function () {
+        $.ajax({
+            type: 'GET',
+            url: '/admin/product/GetAllCategory',
+            dataType: 'json',
+            success: function (response) {
+                if (response) {
+                    var render = '<option value="">--Select category--</option>';
+                    $.each(response, function (i, item) {
+                        render += '<option value="' + item.Id + '">' + item.Name + '</option>';
+                    });
+                    $('#ddlCategorySearch').html(render);
+                }
+            },
+            error: function (error) {
+                console.log(error);
+                app.notify('Cannot loading data', 'error');
+            }
+        });
+    };
     var loadData = function (isPageChanged) {
         var template = $('#table-template').html();
         var render = "";
         $.ajax({
             type: 'GET',
             url: '/admin/product/GetAllPaging',
+            dataType: 'json',
             data: {
-                categoryId: null,
+                categoryId: $('#ddlCategorySearch').val(),
                 keyword: $('#txtKeyword').val(),
                 pageSize: app.configs.pageSize,
                 page: app.configs.pageIndex
@@ -29,7 +60,7 @@
                             Id: item.Id,
                             Name: item.Name,
                             CategoryName: item.ProductCategory.Name,
-                            Image: item.Image == null ? '<img scr="/admin/images/user.png" width=25>' : '<img scr="' + item.Image + '" width=25>',
+                            Image: item.Image === null ? '<img scr="/admin/images/user.png" width=25>' : '<img scr="' + item.Image + '" width=25>',
                             CreatedDate: app.dateFormatJson(item.DateCreated),
                             Status: app.getStatus(item.Status),
                             Price: app.formatNumber(item.Price)
@@ -43,17 +74,16 @@
 
                         wrapPaging(response.RowCount, function () {
                             loadData();
-                        }, isPageChanged)
+                        }, isPageChanged);
                     });
                 }
             },
             error: function (error) {
                 console.log(error);
                 app.notify('Cannot loading data', 'error');
-                app.dateFormatJson()
             }
         });
-    }
+    };
 
     var wrapPaging = function (recordCount, callBack, changePageSize) {
         var totalSize = Math.ceil(recordCount / app.configs.pageSize);
@@ -79,9 +109,9 @@
         });
 
 
-    }
+    };
     return {
         initailize: initailize,
         registerEvent: registerEvent
-    }
+    };
 })();
