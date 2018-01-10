@@ -115,6 +115,7 @@
         }
         return roots;
     }
+
     var postAjax = function (e, xhr, options) {
         $(document).ajaxSend(function (e, xhr, options) {
             if (options.type.toUpperCase() == "POST" || options.type.toUpperCase() == "PUT") {

@@ -26,9 +26,54 @@
                         });
                     });
                     var treeArray = app.unflattern(data);
+                    treeArray.sort(function (a, b) {
+                        return a.sortOrder - b.sortOrder;
+                    });
                     $('#treeProductCategories').tree({
                         data: treeArray,
-                        dnd: true
+                        dnd: true,
+                        onDrop: function (target, source, point) {
+
+                            var targetNode = $(this).tree('getNode', target);
+                            if (point === 'append') {
+                                var children = [];
+                                $.each(targetNode.children, function (i, item) {
+                                    children.push({
+                                        key: item.id,
+                                        value: i
+                                    });
+                                });
+                                debugger;
+                                // Update to Database
+                                $.ajax({
+                                    url: '/Admin/productCategories/UpdateParentId',
+                                    type: 'post',
+                                    dataType: 'json',
+                                    data: {
+                                        sourceId: source.id,
+                                        targetId: targetNode.id,
+                                        items: children
+                                    },
+                                    success: function (response) {
+                                        loadData();
+                                    }
+                                });
+                            } else if (point === 'top' || point === 'bottom') {
+                                $.ajax({
+                                    url: '/Admin/productCategories/ReOrder',
+                                    type: 'post',
+                                    dataType: 'json',
+                                    data: {
+                                        sourceId: source.id,
+                                        targetId: targetNode.id
+                                    },
+                                    success: function (response) {
+                                        loadData();
+                                    }
+                                });
+                            }
+
+                        }
                     });
                 }
             },
