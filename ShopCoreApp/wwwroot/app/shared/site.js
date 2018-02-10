@@ -38,15 +38,15 @@
     }
     var confirm = function (message, onCallBack) {
         bootbox.confirm({
-            message: "This is a confirm with custom button text and color! Do you like it?",
+            message: message,
             buttons: {
                 confirm: {
-                    label: 'Đồng ý',
+                    label: 'Yes',
                     className: 'btn-success'
                 },
                 cancel: {
-                    label: 'Hủy',
-                    className: 'btn-danger'
+                    label: 'No',
+                    className: 'btn-default'
                 }
             },
             callback: function (result) {
@@ -124,6 +124,13 @@
             }
         });
     }
+
+    $(document).ajaxSend(function (e, xhr, options) {
+        if (options.type.toUpperCase() == "POST" || options.type.toUpperCase() == "PUT") {
+            var token = $('form').find("input[name='__RequestVerificationToken']").val();
+            xhr.setRequestHeader("RequestVerificationToken", token);
+        }
+    });
 
     return {
         configs: configs,

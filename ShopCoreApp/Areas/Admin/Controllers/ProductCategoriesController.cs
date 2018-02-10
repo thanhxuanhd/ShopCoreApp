@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ShopCoreApp.Service.Interfaces;
+using ShopCoreApp.Service.ViewModels.ProductCategory;
+using ShopCoreApp.Utilities.Helpers;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ShopCoreApp.Areas.Admin.Controllers
 {
@@ -32,10 +35,19 @@ namespace ShopCoreApp.Areas.Admin.Controllers
 
         #region AJAX Action
 
+        [HttpGet]
         public IActionResult GetAll()
         {
             var productCategories = _productCategoryService.GetAll();
             return new OkObjectResult(productCategories);
+        }
+
+        [HttpGet]
+        public IActionResult GetById(int id)
+        {
+            var productCategory = _productCategoryService.GetById(id);
+
+            return new OkObjectResult(productCategory);
         }
 
         [HttpPost]
@@ -74,6 +86,46 @@ namespace ShopCoreApp.Areas.Admin.Controllers
             _productCategoryService.Save();
 
             return new OkResult();
+        }
+
+        [HttpPost]
+        public IActionResult SaveProductCategory(ProductCategoryViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values
+                                       .SelectMany(x => x.Errors)
+                                       .Select(x => x.ErrorMessage);
+                return BadRequest(errors);
+            }
+            if (!string.IsNullOrEmpty(model.SeoAlias))
+            {
+                model.SeoAlias = TextHelper.ToUnsignString(model.SeoAlias);
+            }
+
+            if (model.Id == 0)
+            {
+                var productCategory = _productCategoryService.Add(model);
+            }
+            else
+            {
+                _productCategoryService.Update(model);
+            }
+
+            _productCategoryService.Save();
+            return new OkObjectResult(model);
+        }
+
+        [HttpDelete]
+        public IActionResult DeleteProductCategory(int id)
+        {
+            if (id == 0)
+            {
+                return BadRequest();
+            }
+            _productCategoryService.Delete(id);
+            _productCategoryService.Save();
+            return new OkObjectResult(id);
         }
 
         #endregion AJAX Action

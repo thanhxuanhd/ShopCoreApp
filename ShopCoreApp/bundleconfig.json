@@ -20,5 +20,11 @@
     "inputFiles": [
       "wwwroot/app/controllers/product/index.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/app/controllers/product-category/index.min.js",
+    "inputFiles": [
+      "wwwroot/app/controllers/product-category/index.js"
+    ]
   }
 ]
