@@ -86,10 +86,13 @@ namespace ShopCoreApp
             services.AddTransient<IProductRepository, ProductRepository>();
             services.AddTransient<IProductTagRepository, ProductTagRepository>();
             services.AddTransient<ITagRepository, TagRepository>();
+            services.AddTransient<IPermissionRepository, PermissionRepository>();
             // Config Service
             services.AddTransient<IProductCategoryService, ProductCategoryService>();
             services.AddTransient<IFunctionService, FunctionService>();
             services.AddTransient<IProductService, ProductService>();
+            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IRoleService, RoleService>();
             // Config DbInitializer
             services.AddTransient<DbInitializer>();
             // Config Json
