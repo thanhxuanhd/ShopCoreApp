@@ -7,8 +7,10 @@
     var registerEvent = function () {
         $('#btnCreate').off('click').on('click', function (e) {
             initTreeDropDownCategory();
+            clearAddEditProductCategoryForm();
             $('#modalAddEdit').modal('show');
         });
+
         $('#frmMaintainance').validate({
             errorClass: 'red',
             ignore: [],
@@ -19,6 +21,7 @@
                 txtHomeOrderProductCategory: { number: true }
             }
         });
+
         $('body').on('click', '#btnEdit', function (e) {
             e.preventDefault();
             var productId = $('#hidIdM').val();
@@ -35,7 +38,6 @@
                     $('#hidIdM').val(data.Id);
 
                     initTreeDropDownCategory(data.categoryId);
-
                     $('#txtNameProductCategory').val(data.Name);
                     $('#txtDescriptionProductCategory').val(data.Description);
                     $('#txtOrderProductCategory').val(data.SortOrder);
@@ -44,7 +46,7 @@
                     $('#txtSeoKeywordsProductCategory').val(data.SeoKeywords);
                     $('#txtSeoDescriptionProductCategory').val(data.SeoDescription);
                     $('#txtSeoAliasProductCategory').val(data.SeoAlias);
-                    $('#txtImageProductCategory').val(data.ThumbnailImage);
+                    $('#txtImageProductCategory').val(data.Image);
                     $('#ckStatusProductCategory').prop('checked', data.Status == 1);
                     $('#ckShowHomeProductCategory').prop('checked', data.HomeFlag);
                     $('#modalAddEdit').modal('show');
@@ -67,7 +69,6 @@
                     image: $('#txtImageProductCategory').val(),
                     sortOrder: parseInt($('#txtOrderProductCategory').val()),
                     homeOrder: $('#txtHomeOrderProductCategory').val(),
-
                     seoKeywords: $('#txtSeoKeywordsProductCategory').val(),
                     seoDescription: $('#txtSeoDescriptionProductCategory').val(),
                     seoPageTitle: $('#txtSeoPageTitleProductCategory').val(),
@@ -89,7 +90,7 @@
                         clearAddEditProductCategoryForm();
                         app.stopLoading();
                         $('#modalAddEdit').modal('hide');
-                       
+
                     },
                     error: function (error) {
                         app.notify('Error', 'error');
@@ -99,10 +100,12 @@
             }
             return false;
         });
+
         $('#btnCancel').on('click', function (e) {
-            $('#modalAddEdit').modal('hide');
             clearAddEditProductCategoryForm();
+            $('#modalAddEdit').modal('hide');
         });
+
         $('body').on('click', '#btnDelete', function (e) {
             e.preventDefault();
             var productCategory = $('#hidIdM');
@@ -125,6 +128,33 @@
                         app.stopLoading();
                     }
                 });
+            });
+        });
+
+        $('#btnSelectImgProductCategory').on('click', function () {
+            $('#fileInputImage').click();
+        });
+
+        $("#fileInputImage").on('change', function () {
+            var fileUpload = $(this).get(0);
+            var files = fileUpload.files;
+            var data = new FormData();
+            for (var i = 0; i < files.length; i++) {
+                data.append(files[i].name, files[i]);
+            }
+            $.ajax({
+                type: "POST",
+                url: "/Admin/Upload/UploadImage",
+                contentType: false,
+                processData: false,
+                data: data,
+                success: function (path) {
+                    $('#txtImageProductCategory').val(path);
+                    app.notify('Upload image succesful!', 'success');
+                },
+                error: function () {
+                    app.notify('There was error uploading files!', 'error');
+                }
             });
         });
     };

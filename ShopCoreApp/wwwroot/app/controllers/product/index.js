@@ -12,14 +12,17 @@
             app.configs.pageIndex = 1;
             loadData(true);
         });
+
         $('#btnSearch').on('click', function () {
             loadData();
         });
+
         $('#txtKeyword').on('keypress', function (e) {
             if (e.which === 13) {
                 loadData();
             }
         });
+
         $("#btnCreate").on('click', function () {
             resetFormMaintainance();
             initTreeDropDownCategory();
@@ -41,6 +44,33 @@
             e.preventDefault();
             var that = $(this).data('id');
             deleteProduct(that);
+        });
+
+        $('#btnSelectImg').on('click', function () {
+            $('#fileInputImage').click();
+        });
+
+        $("#fileInputImage").on('change', function () {
+            var fileUpload = $(this).get(0);
+            var files = fileUpload.files;
+            var data = new FormData();
+            for (var i = 0; i < files.length; i++) {
+                data.append(files[i].name, files[i]);
+            }
+            $.ajax({
+                type: "POST",
+                url: "/Admin/Upload/UploadImage",
+                contentType: false,
+                processData: false,
+                data: data,
+                success: function (path) {
+                    $('#txtImage').val(path);
+                    app.notify('Upload image succesful!', 'success');
+                },
+                error: function () {
+                    app.notify('There was error uploading files!', 'error');
+                }
+            });
         });
     };
 
