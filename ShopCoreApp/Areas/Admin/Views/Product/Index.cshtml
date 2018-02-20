@@ -1,4 +1,13 @@
-﻿
+﻿@section Styles{
+    <link href="~/lib/jQuery-EasyUI/themes/bootstrap/easyui.css" rel="stylesheet" />
+    <link href="~/lib/jQuery-EasyUI/themes/icon.css" rel="stylesheet" />
+    <style>
+        .textbox .combo {
+            width: 100% !important;
+        }
+    </style>
+}
+
 <div class="clearfix"></div>
 <div class="row">
     <div class="col-md-12 col-sm-12 col-xs-12">
@@ -24,7 +33,7 @@
                         </select>
                     </div>
                     <div class="col-md-6 col-sm-12  form-group pull-right">
-                        <button id="btnCreate" class="btn btn-success">Create</button>
+                        <button class="btn btn-success" id="btnCreate" type="button"><i class="fa fa-plus"></i> Create</button>
                         <a class="btn btn-danger" href="~/templates/ProductImportTemplate.xlsx">Template</a>
                         <button class="btn btn-primary" id="btn-import" type="button"><i class="fa fa-file-excel-o"></i></button>
                         <button class="btn btn-default" id="btn-export" type="button"><i class="fa fa-forward"></i></button>
@@ -73,11 +82,13 @@
     </div>
 </div>
 
+@Html.Partial("_AddEditModal.cshtml")
+
 <script id="table-template" type="x-tmpl-mustache">
     <tr>
         <th scope="row">
-            <button class="btn btn-sm"><i class="fa fa-pencil"></i></button>
-            <button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
+            <button class="btn btn-sm btn-edit" data-id="{{Id}}"><i class="fa fa-pencil"></i></button>
+            <button class="btn btn-sm btn-danger btn-delete" data-id="{{Id}}"><i class="fa fa-trash"></i></button>
         </th>
         <td>{{Name}}</td>
         <td>{{CategoryName}}</td>
@@ -89,7 +100,10 @@
 </script>
 
 @section Scripts{
-    <script src="~/app/controllers/product/index.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/lib/jQuery-EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/app/controllers/product/index.js" asp-append-version="true"></script>
     <script>
         productController.initailize();
     </script>
