@@ -34,8 +34,8 @@
             hideDuration: 200,
             // padding between element and notification
             gap: 2
-        })
-    }
+        });
+    };
     var confirm = function (message, onCallBack) {
         bootbox.confirm({
             message: message,
@@ -55,7 +55,7 @@
                 }
             }
         });
-    }
+    };
     var dateFormatJson = function (dateTime, formatDate) {
         if (!dateTime) {
             return '';
@@ -74,23 +74,23 @@
             return moment(dateTime).format(formatDateTime);
         }
         return moment(dateTime).format('DD/MM/YYYY hh:mm:ss');
-    }
+    };
     var startLoading = function () {
         if ($('.dv-loading').length > 0) {
             $('.dv-loading').removeClass('hide');
         }
-    }
+    };
     var stopLoading = function () {
         if ($('.dv-loading').length > 0) {
             $('.dv-loading').addClass('hide');
         }
-    }
+    };
     var getStatus = function (status) {
-        if (status == 1)
+        if (status === 1)
             return '<span class="badge bg-green">Kích hoạt</span>';
         else
             return '<span class="badge bg-red">Khóa</span>';
-    }
+    };
     var formatNumber = function (number, precision) {
         if (!isFinite(number)) {
             return number.toString();
@@ -99,7 +99,7 @@
         var a = number.toFixed(precision).split('.');
         a[0] = a[0].replace(/\d(?=(\d{3})+$)/g, '$&,');
         return a.join('.');
-    }
+    };
     var unflattern = function (arr) {
         var map = {};
         var roots = [];
@@ -114,19 +114,19 @@
             }
         }
         return roots;
-    }
+    };
 
     var postAjax = function (e, xhr, options) {
         $(document).ajaxSend(function (e, xhr, options) {
-            if (options.type.toUpperCase() == "POST" || options.type.toUpperCase() == "PUT") {
+            if (options.type.toUpperCase() === "POST" || options.type.toUpperCase() === "PUT") {
                 var token = $('form').find("input[name='__RequestVerificationToken']").val();
                 xhr.setRequestHeader("RequestVerificationToken", token);
             }
         });
-    }
+    };
 
     $(document).ajaxSend(function (e, xhr, options) {
-        if (options.type.toUpperCase() == "POST" || options.type.toUpperCase() == "PUT") {
+        if (options.type.toUpperCase() === "POST" || options.type.toUpperCase() === "PUT") {
             var token = $('form').find("input[name='__RequestVerificationToken']").val();
             xhr.setRequestHeader("RequestVerificationToken", token);
         }
@@ -144,5 +144,5 @@
         formatNumber: formatNumber,
         unflattern: unflattern,
         postAjax: postAjax
-    }
+    };
 })();
