@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using ShopCoreApp.Authorization;
 using ShopCoreApp.Service.Interfaces;
 using ShopCoreApp.Service.ViewModels.System;
 using System;
@@ -14,22 +16,29 @@ namespace ShopCoreApp.Areas.Admin.Controllers
         #region Valiables
 
         private readonly IRoleService _roleService;
+        private readonly IAuthorizationService _authorizationService;
 
         #endregion Valiables
 
         #region Ctor
 
-        public RoleController(IRoleService roleService)
+        public RoleController(IRoleService roleService, IAuthorizationService authorizationService)
         {
             _roleService = roleService;
+            _authorizationService = authorizationService;
         }
 
         #endregion Ctor
 
         #region View
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            var result = await _authorizationService.AuthorizeAsync(User, "USER", Operations.Read);
+            if (result.Succeeded == false)
+            {
+                return new RedirectResult("/Admin/Login/Index");
+            }
             return View();
         }
 

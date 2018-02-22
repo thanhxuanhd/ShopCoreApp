@@ -1,6 +1,9 @@
 ﻿@{
     ViewData["Title"] = "Role list";
 }
+@using Microsoft.AspNetCore.Authorization
+@using ShopCoreApp.Authorization
+@inject IAuthorizationService authorizationService
 @section Styles{
     <link href="~/lib/jquery-treegrid/css/jquery.treegrid.css" rel="stylesheet" />
 }
@@ -21,7 +24,13 @@
 
         <div class="title_right">
             <div class="col-md-2 col-sm-2 col-xs-12 form-group pull-right top_search">
-                <button class="btn btn-success" id="btn-create" type="button">Create</button>
+                @{
+                    var result = await authorizationService.AuthorizeAsync(User, "ROLE", Operations.Create);
+                }
+                @if (result.Succeeded)
+                {
+                    <button class="btn btn-success" id="btn-create" type="button">Create</button>
+                }
             </div>
             <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
                 <div class="input-group">
@@ -85,9 +94,15 @@
             <td>{{Name}}</td>
             <td>{{Description}}</td>
             <td>
-                <a href="#" data-id="{{Id}}" class="btn  btn-xs btn-primary btn-grant"><i class="fa fa-eye-slash"></i></a>
-                <a href="#" data-id="{{Id}}" class="btn  btn-xs btn-info btn-edit"><i class="fa fa-pencil-square-o"></i></a>
-                <a href="#" data-id="{{Id}}" class="btn btn-xs  btn-danger btn-delete"><i class="fa fa-trash-o"></i></a>
+                @if ((await authorizationService.AuthorizeAsync(User, "USER", Operations.Update)).Succeeded)
+                {
+                    <a href="#" data-id="{{Id}}" class="btn  btn-xs btn-primary btn-grant"><i class="fa fa-eye-slash"></i></a>
+                    <a href="#" data-id="{{Id}}" class="btn  btn-xs btn-info btn-edit"><i class="fa fa-pencil-square-o"></i></a>
+                }
+                @if ((await authorizationService.AuthorizeAsync(User, "USER", Operations.Delete)).Succeeded)
+                {
+                    <a href="#" data-id="{{Id}}" class="btn btn-xs  btn-danger btn-delete"><i class="fa fa-trash-o"></i></a>
+                }
             </td>
         </tr>
     </script>
