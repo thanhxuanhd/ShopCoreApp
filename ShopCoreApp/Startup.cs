@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -7,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Serialization;
+using ShopCoreApp.Authorization;
 using ShopCoreApp.Data.EF;
 using ShopCoreApp.Data.EF.Repositories;
 using ShopCoreApp.Data.Entities;
@@ -93,6 +95,7 @@ namespace ShopCoreApp
             services.AddTransient<IProductService, ProductService>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IRoleService, RoleService>();
+            services.AddTransient<IAuthorizationHandler, BaseResourceAuthorizationHander>();
             // Config DbInitializer
             services.AddTransient<DbInitializer>();
             // Config Json

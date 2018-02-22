@@ -1,7 +1,9 @@
 ﻿@{
     ViewData["Title"] = "User";
 }
-
+@using Microsoft.AspNetCore.Authorization
+@using ShopCoreApp.Authorization
+@inject IAuthorizationService authorizationService
 @section Styles{
 
 }
@@ -15,15 +17,13 @@
 
         <div class="title_right">
             <div class="col-md-2 col-sm-2 col-xs-12 form-group pull-right top_search">
-                @*@{
-                        var result = await AuthorizationService.AuthorizeAsync(User, "USER", Operations.Create);
-                    }
-                    @if (result.Succeeded)
-                    {
-                        <button class="btn btn-success" id="btn-create" type="button">Create</button>
-                    }*@
-
-                <button class="btn btn-success" id="btn-create" type="button">Create</button>
+                @{
+                    var result = await authorizationService.AuthorizeAsync(User, "USER", Operations.Create);
+                }
+                @if (result.Succeeded)
+                {
+                    <button class="btn btn-success" id="btn-create" type="button">Create</button>
+                }
             </div>
             <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
                 <div class="input-group">
@@ -94,24 +94,17 @@
             <td>{{{DateCreated}}}</td>
             <td>{{{Status}}}</td>
             <td>
-                <a href="#" data-id="{{Id}}" class="btn-edit"><i class="fa fa-pencil-square-o"></i></a>
+                @if ((await authorizationService.AuthorizeAsync(User, "USER", Operations.Update)).Succeeded)
+                {
+                    <a href="#" data-id="{{Id}}" class="btn-edit"><i class="fa fa-pencil-square-o"></i></a>
+                }
             </td>
             <td>
-                <a href="#" data-id="{{Id}}" class="btn-delete"><i class="fa fa-trash-o"></i></a>
+                @if ((await authorizationService.AuthorizeAsync(User, "USER", Operations.Delete)).Succeeded)
+                {
+                    <a href="#" data-id="{{Id}}" class="btn-delete"><i class="fa fa-trash-o"></i></a>
+                }
             </td>
-            @*<td>
-                    @if ((await AuthorizationService.AuthorizeAsync(User, "USER", Operations.Update)).Succeeded)
-                    {
-                        <a href="#" data-id="{{Id}}" class="btn-edit"><i class="fa fa-pencil-square-o"></i></a>
-                    }
-                </td>
-                <td>
-                    @if ((await AuthorizationService.AuthorizeAsync(User, "USER", Operations.Delete)).Succeeded)
-                    {
-                        <a href="#" data-id="{{Id}}" class="btn-delete"><i class="fa fa-trash-o"></i></a>
-
-                    }
-                </td>*@
         </tr>
     </script>
 

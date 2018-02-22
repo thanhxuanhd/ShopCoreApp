@@ -39,7 +39,8 @@ namespace ShopCoreApp.Service.Implementation
                 Email = userVm.Email,
                 FullName = userVm.FullName,
                 DateCreated = DateTime.UtcNow,
-                PhoneNumber = userVm.PhoneNumber
+                PhoneNumber = userVm.PhoneNumber,
+                Status = userVm.Status,
             };
 
             var result = await _userManager.CreateAsync(user, userVm.Password);

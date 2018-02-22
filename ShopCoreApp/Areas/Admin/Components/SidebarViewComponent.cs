@@ -33,7 +33,7 @@ namespace ShopCoreApp.Areas.Admin.Components
             else
             {
                 // TODO
-                // _functionService.GetAllByPermission();
+                functions = await _functionService.GetAll(string.Empty);
 
             }
             return View(functions);
