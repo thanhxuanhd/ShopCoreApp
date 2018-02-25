@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ShopCoreApp.Data.Entities;
 using ShopCoreApp.Service.ViewModels;
+using ShopCoreApp.Service.ViewModels.Bill;
 using ShopCoreApp.Service.ViewModels.Function;
 using ShopCoreApp.Service.ViewModels.Product;
 using ShopCoreApp.Service.ViewModels.ProductCategory;
@@ -20,6 +21,10 @@ namespace ShopCoreApp.Service.AutoMapper
             CreateMap<Permission, PermissionViewModel>();
             CreateMap<Product, ProductExportViewModel>()
                 .ForMember(pd => pd.ProductCategory, opts => opts.MapFrom(o => o.ProductCategory.Name));
+            CreateMap<Bill, BillViewModel>();
+            CreateMap<BillDetail, BillDetailViewModel>();
+            CreateMap<Color, ColorViewModel>();
+            CreateMap<Size, SizeViewModel>();
         }
     }
 }

@@ -37,6 +37,6 @@
     "commit": "c8ba9e9604620002155d01a947cceffe18d4428c"
   },
   "_source": "https://github.com/maxazan/jquery-treegrid.git",
-  "_target": "0.3.0",
+  "_target": "~0.3.0",
   "_originalSource": "jquery-treegrid"
 }

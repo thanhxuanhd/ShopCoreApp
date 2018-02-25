@@ -107,7 +107,7 @@
         $('#btn-export').on('click', function () {
             var data = {
                 categoryId: $('#ddlCategorySearch').val()
-            }
+            };
             $.ajax({
                 type: "POST",
                 url: "/Admin/Product/ExportExcel",
