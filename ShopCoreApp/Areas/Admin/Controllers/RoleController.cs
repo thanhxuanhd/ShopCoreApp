@@ -34,7 +34,7 @@ namespace ShopCoreApp.Areas.Admin.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var result = await _authorizationService.AuthorizeAsync(User, "USER", Operations.Read);
+            var result = await _authorizationService.AuthorizeAsync(User, "ROLE", Operations.Read);
             if (result.Succeeded == false)
             {
                 return new RedirectResult("/Admin/Login/Index");

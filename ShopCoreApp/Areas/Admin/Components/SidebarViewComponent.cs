@@ -8,16 +8,23 @@ using ShopCoreApp.Extensions;
 using System.Security.Claims;
 using ShopCoreApp.Service.ViewModels.Function;
 using static ShopCoreApp.Utilities.Constants.CommonConstants;
+using Microsoft.AspNetCore.Authorization;
+using ShopCoreApp.Authorization;
 
 namespace ShopCoreApp.Areas.Admin.Components
 {
     public class SideBarViewComponent : ViewComponent
     {
+        #region Variables
         private readonly IFunctionService _functionService;
+        private readonly IAuthorizationService _authorizationService;
+        #endregion
+
         #region Ctor
-        public SideBarViewComponent(IFunctionService functionService)
+        public SideBarViewComponent(IFunctionService functionService, IAuthorizationService authorizationService)
         {
             _functionService = functionService;
+            _authorizationService = authorizationService;
         }
         #endregion
 
@@ -33,8 +40,19 @@ namespace ShopCoreApp.Areas.Admin.Components
             else
             {
                 // TODO
-                functions = await _functionService.GetAll(string.Empty);
+                var functionsTemp = await _functionService.GetAll(string.Empty);
 
+                if (functionsTemp.Any())
+                {
+                    functionsTemp.ForEach(async x =>
+                    {
+                        var havePermission = await _authorizationService.AuthorizeAsync((ClaimsPrincipal)User, x.Id, Operations.Read);
+                        if (havePermission.Succeeded)
+                        {
+                            functions.Add(x);
+                        }
+                    });
+                }
             }
             return View(functions);
         }

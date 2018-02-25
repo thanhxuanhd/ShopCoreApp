@@ -2,6 +2,7 @@
 using ShopCoreApp.Data.Entities;
 using ShopCoreApp.Service.ViewModels;
 using ShopCoreApp.Service.ViewModels.Function;
+using ShopCoreApp.Service.ViewModels.Product;
 using ShopCoreApp.Service.ViewModels.ProductCategory;
 using ShopCoreApp.Service.ViewModels.System;
 
@@ -17,6 +18,8 @@ namespace ShopCoreApp.Service.AutoMapper
             CreateMap<AppUser, AppUserViewModel>();
             CreateMap<AppRole, AppRoleViewModel>();
             CreateMap<Permission, PermissionViewModel>();
+            CreateMap<Product, ProductExportViewModel>()
+                .ForMember(pd => pd.ProductCategory, opts => opts.MapFrom(o => o.ProductCategory.Name));
         }
     }
 }

@@ -1,10 +1,20 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using OfficeOpenXml;
+using OfficeOpenXml.Table;
+using ShopCoreApp.Authorization;
 using ShopCoreApp.Service.Interfaces;
 using ShopCoreApp.Service.ViewModels;
 using ShopCoreApp.Utilities.Helpers;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
 
 namespace ShopCoreApp.Areas.Admin.Controllers
 {
@@ -14,24 +24,35 @@ namespace ShopCoreApp.Areas.Admin.Controllers
 
         private readonly IProductService _productService;
         private readonly IProductCategoryService _productCategoryService;
-
+        private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly IAuthorizationService _authorizationService;
         #endregion Variables
 
         #region Ctor
 
-        public ProductController(IProductService productService, IProductCategoryService productCategoryService)
+        public ProductController(IProductService productService,
+            IProductCategoryService productCategoryService,
+            IHostingEnvironment hostingEnvironment,
+            IAuthorizationService authorizationService)
         {
             _productService = productService;
             _productCategoryService = productCategoryService;
+            _hostingEnvironment = hostingEnvironment;
+            _authorizationService = authorizationService;
         }
 
         #endregion Ctor
 
         #region Action
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             ViewData["Title"] = "Product";
+            var result = await _authorizationService.AuthorizeAsync(User, "PRODUCT", Operations.Read);
+            if (result.Succeeded == false)
+            {
+                return new RedirectResult("/Admin/Login/Index");
+            }
             return View();
         }
 
@@ -111,6 +132,69 @@ namespace ShopCoreApp.Areas.Admin.Controllers
 
             return new OkObjectResult(id);
         }
+
+        [HttpPost]
+        public IActionResult ImportExcel(IList<IFormFile> files, int categoryId)
+        {
+            if (files != null && files.Count > 0)
+            {
+                var file = files[0];
+                var fileName = ContentDispositionHeaderValue
+                                .Parse(file.ContentDisposition)
+                                .FileName
+                                .Trim('"');
+                var folder = _hostingEnvironment.WebRootPath + $@"\uploaded\excels";
+
+                if (!Directory.Exists(folder))
+                {
+                    Directory.CreateDirectory(folder);
+                }
+
+                string filePath = Path.Combine(folder, fileName);
+
+                using (FileStream fs = System.IO.File.Create(filePath))
+                {
+                    file.CopyTo(fs);
+                    fs.Flush();
+                }
+
+                _productService.ImportExcel(filePath, categoryId);
+                _productService.Save();
+
+                return new OkObjectResult(filePath);
+            }
+            return BadRequest();
+        }
+
+        [HttpPost]
+        public IActionResult ExportExcel(int? categoryId)
+        {
+            string sWebRootFolder = _hostingEnvironment.WebRootPath;
+            string directory = Path.Combine(sWebRootFolder, "export-files");
+            if (!Directory.Exists(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
+            string sFileName = $"Product_{DateTime.Now:yyyyMMddhhmmss}.xlsx";
+            string fileUrl = $"{Request.Scheme}://{Request.Host}/export-files/{sFileName}";
+            FileInfo file = new FileInfo(Path.Combine(directory, sFileName));
+            if (file.Exists)
+            {
+                file.Delete();
+                file = new FileInfo(Path.Combine(sWebRootFolder, sFileName));
+            }
+            var products = _productService.ExportProduct(categoryId);
+            using (ExcelPackage package = new ExcelPackage(file))
+            {
+                // add a new worksheet to the empty workbook
+                ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("Products");
+                worksheet.Cells["A1"].LoadFromCollection(products, true, TableStyles.Light1);
+                worksheet.Cells.AutoFitColumns();
+                package.Save(); //Save the workbook.
+            }
+            return new OkObjectResult(fileUrl);
+        }
+
 
         #endregion AJAX API
     }

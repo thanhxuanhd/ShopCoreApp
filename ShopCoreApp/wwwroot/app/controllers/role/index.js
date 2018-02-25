@@ -25,7 +25,7 @@
         });
 
         $('#btn-search').on('click', function () {
-            loadData();
+            loadData(true);
         });
 
         $('#ddl-show-page').on('change', function () {
@@ -368,10 +368,10 @@
         $('#paginationUL').twbsPagination({
             totalPages: totalsize,
             visiblePages: 7,
-            first: 'Đầu',
-            prev: 'Trước',
-            next: 'Tiếp',
-            last: 'Cuối',
+            first: 'First',
+            prev: 'Prev',
+            next: 'Next',
+            last: 'Last',
             onPageClick: function (event, p) {
                 app.configs.pageIndex = p;
                 setTimeout(callBack(), 200);

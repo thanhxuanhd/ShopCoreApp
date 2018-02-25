@@ -14,7 +14,7 @@
         });
 
         $('#btnSearch').on('click', function () {
-            loadData();
+            loadData(true);
         });
 
         $('#txtKeyword').on('keypress', function (e) {
@@ -72,9 +72,62 @@
                 }
             });
         });
+
+        $('#btn-import').on('click', function () {
+            initTreeDropDownCategory();
+            $('#modal-import-excel').modal('show');
+        });
+
+        $('#btnImportExcel').on('click', function () {
+            var fileUpload = $("#fileInputExcel").get(0);
+            var files = fileUpload.files;
+
+            // Create FormData object  
+            var fileData = new FormData();
+            // Looping over all files and add it to FormData object  
+            for (var i = 0; i < files.length; i++) {
+                fileData.append("files", files[i]);
+            }
+            // Adding one more key to FormData object  
+            fileData.append('categoryId', $('#ddlCategoryIdImportExcel').combotree('getValue'));
+            $.ajax({
+                url: '/Admin/Product/ImportExcel',
+                type: 'POST',
+                data: fileData,
+                processData: false,  // tell jQuery not to process the data
+                contentType: false,  // tell jQuery not to set contentType
+                success: function (data) {
+                    $('#modal-import-excel').modal('hide');
+                    loadData();
+                }
+            });
+            return false;
+        });
+
+        $('#btn-export').on('click', function () {
+            var data = {
+                categoryId: $('#ddlCategorySearch').val()
+            }
+            $.ajax({
+                type: "POST",
+                url: "/Admin/Product/ExportExcel",
+                data: data,
+                beforeSend: function () {
+                    app.startLoading();
+                },
+                success: function (response) {
+                    window.location.href = response;
+                    app.stopLoading();
+                },
+                error: function () {
+                    app.notify('Has an error in progress', 'error');
+                    app.stopLoading();
+                }
+            });
+        });
     };
 
-    function registerControls() {
+    var registerControls = function () {
         CKEDITOR.replace('txtContent', {});
 
         //Fix: cannot click on element ck in modal
@@ -92,8 +145,8 @@
                     }
                 }, this));
         };
+    };
 
-    }
     var loadCategorys = function () {
         $.ajax({
             type: 'GET',
@@ -210,8 +263,7 @@
         $('#ckStatusM').prop('checked', true);
         $('#ckHotM').prop('checked', false);
         $('#ckShowHomeM').prop('checked', false);
-
-    }
+    };
 
     var initTreeDropDownCategory = function (selectedId) {
         $.ajax({
@@ -237,12 +289,12 @@
                 $('#ddlCategoryIdImportExcel').combotree({
                     data: arr
                 });
-                if (selectedId != undefined) {
+                if (selectedId !== undefined) {
                     $('#ddlCategoryIdM').combotree('setValue', selectedId);
                 }
             }
         });
-    }
+    };
 
     var loadDetails = function (id) {
         $.ajax({
@@ -275,7 +327,7 @@
                 $('#txtSeoAliasM').val(data.SeoAlias);
 
                 CKEDITOR.instances.txtContent.setData(data.Content);
-                $('#ckStatusM').prop('checked', data.Status == 1);
+                $('#ckStatusM').prop('checked', data.Status === 1);
                 $('#ckHotM').prop('checked', data.HotFlag);
                 $('#ckShowHomeM').prop('checked', data.HomeFlag);
 
@@ -288,7 +340,7 @@
                 app.stopLoading();
             }
         });
-    }
+    };
 
     var saveProduct = function (e) {
         if ($('#frmMaintainance').valid()) {
@@ -313,7 +365,7 @@
             var seoAlias = $('#txtSeoAliasM').val();
 
             var content = CKEDITOR.instances.txtContent.getData();
-            var status = $('#ckStatusM').prop('checked') == true ? 1 : 0;
+            var status = $('#ckStatusM').prop('checked') === true ? 1 : 0;
             var hot = $('#ckHotM').prop('checked');
             var showHome = $('#ckShowHomeM').prop('checked');
 
@@ -359,7 +411,7 @@
             });
             return false;
         }
-    }
+    };
 
     var deleteProduct = function (id) {
         app.confirm('Are you sure to delete?', function () {
@@ -382,7 +434,7 @@
                 }
             });
         });
-    }
+    };
 
     return {
         initailize: initailize,

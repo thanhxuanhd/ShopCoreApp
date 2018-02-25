@@ -63,9 +63,11 @@ namespace ShopCoreApp.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task UploadImageForCKEditor(IList<IFormFile> files, string CKEditorFuncNum, string CKEditor, string languCode)
+        public async Task UploadImageForCKEditor(string CKEditorFuncNum, string CKEditor, string languCode)
         {
             DateTime now = DateTime.UtcNow;
+
+            IList<IFormFile> files = Request.Form.Files.ToList();
 
             if (files.Count == 0)
             {

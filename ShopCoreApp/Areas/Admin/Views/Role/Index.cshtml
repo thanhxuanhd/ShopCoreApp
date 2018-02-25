@@ -94,12 +94,12 @@
             <td>{{Name}}</td>
             <td>{{Description}}</td>
             <td>
-                @if ((await authorizationService.AuthorizeAsync(User, "USER", Operations.Update)).Succeeded)
+                @if ((await authorizationService.AuthorizeAsync(User, "ROLE", Operations.Update)).Succeeded)
                 {
                     <a href="#" data-id="{{Id}}" class="btn  btn-xs btn-primary btn-grant"><i class="fa fa-eye-slash"></i></a>
                     <a href="#" data-id="{{Id}}" class="btn  btn-xs btn-info btn-edit"><i class="fa fa-pencil-square-o"></i></a>
                 }
-                @if ((await authorizationService.AuthorizeAsync(User, "USER", Operations.Delete)).Succeeded)
+                @if ((await authorizationService.AuthorizeAsync(User, "ROLE", Operations.Delete)).Succeeded)
                 {
                     <a href="#" data-id="{{Id}}" class="btn btn-xs  btn-danger btn-delete"><i class="fa fa-trash-o"></i></a>
                 }

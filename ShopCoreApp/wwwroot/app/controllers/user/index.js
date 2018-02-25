@@ -30,12 +30,13 @@
         $('#txt-search-keyword').keypress(function (e) {
             if (e.which === 13) {
                 e.preventDefault();
-                loadData();
+                loadData(true);
             }
         });
         $("#btn-search").on('click', function () {
             loadData();
         });
+
         $("#ddl-show-page").on('change', function () {
             app.configs.pageSize = $(this).val();
             app.configs.pageIndex = 1;
@@ -268,10 +269,10 @@
         $('#paginationUL').twbsPagination({
             totalPages: totalsize,
             visiblePages: 7,
-            first: 'Đầu',
-            prev: 'Trước',
-            next: 'Tiếp',
-            last: 'Cuối',
+            first: 'First',
+            prev: 'Prev',
+            next: 'Next',
+            last: 'Last',
             onPageClick: function (event, p) {
                 app.configs.pageIndex = p;
                 setTimeout(callBack(), 200);

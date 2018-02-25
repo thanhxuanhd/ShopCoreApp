@@ -1,4 +1,5 @@
 ﻿using ShopCoreApp.Service.ViewModels;
+using ShopCoreApp.Service.ViewModels.Product;
 using ShopCoreApp.Utilities.Dtos;
 using System;
 using System.Collections.Generic;
@@ -20,5 +21,9 @@ namespace ShopCoreApp.Service.Interfaces
         void Delete(int id);
 
         void Save();
+
+        void ImportExcel(string filePath, int categoryId);
+
+        List<ProductExportViewModel> ExportProduct(int? categoryId);
     }
 }

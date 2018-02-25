@@ -1,16 +1,19 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using OfficeOpenXml;
 using ShopCoreApp.Data.Entities;
 using ShopCoreApp.Data.IRepositories;
 using ShopCoreApp.Infrastructure.Enums;
 using ShopCoreApp.Infrastructure.Interfaces;
 using ShopCoreApp.Service.Interfaces;
 using ShopCoreApp.Service.ViewModels;
+using ShopCoreApp.Service.ViewModels.Product;
 using ShopCoreApp.Utilities.Constants;
 using ShopCoreApp.Utilities.Dtos;
 using ShopCoreApp.Utilities.Helpers;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace ShopCoreApp.Service.Implementation
@@ -155,6 +158,59 @@ namespace ShopCoreApp.Service.Implementation
         public void Delete(int id)
         {
             _productRepository.Remove(id);
+        }
+
+        public void ImportExcel(string filePath, int categoryId)
+        {
+            using (var package = new ExcelPackage(new FileInfo(filePath)))
+            {
+                ExcelWorksheet workSheet = package.Workbook.Worksheets[1];
+                Product product;
+
+                for (int i = workSheet.Dimension.Start.Row + 1; i <= workSheet.Dimension.End.Row; i++)
+                {
+                    product = new Product();
+                    product.CategoryId = categoryId;
+
+                    product.Name = workSheet.Cells[i, 1].Value.ToString();
+
+                    product.Description = workSheet.Cells[i, 2].Value.ToString();
+
+                    decimal.TryParse(workSheet.Cells[i, 3].Value.ToString(), out var originalPrice);
+                    product.OriginalPrice = originalPrice;
+
+                    decimal.TryParse(workSheet.Cells[i, 4].Value.ToString(), out var price);
+                    product.Price = price;
+                    decimal.TryParse(workSheet.Cells[i, 5].Value.ToString(), out var promotionPrice);
+
+                    product.PromotionPrice = promotionPrice;
+                    product.Content = workSheet.Cells[i, 6].Value.ToString();
+                    product.SeoKeywords = workSheet.Cells[i, 7].Value.ToString();
+
+                    product.SeoDescription = workSheet.Cells[i, 8].Value.ToString();
+                    bool.TryParse(workSheet.Cells[i, 9].Value.ToString(), out var hotFlag);
+
+                    product.HotFlag = hotFlag;
+                    bool.TryParse(workSheet.Cells[i, 10].Value.ToString(), out var homeFlag);
+                    product.HomeFlag = homeFlag;
+
+                    product.Status = Status.Active;
+
+                    _productRepository.Add(product);
+                }
+            }
+        }
+
+        public List<ProductExportViewModel> ExportProduct(int? categoryId)
+        {
+            var query = _productRepository.FindAll(x => x.ProductCategory);
+
+            if (categoryId != null)
+            {
+                query = query.Where(x => x.CategoryId == categoryId);
+            }
+
+            return query.ProjectTo<ProductExportViewModel>().ToList();
         }
     }
 }
