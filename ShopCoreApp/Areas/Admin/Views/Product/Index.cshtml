@@ -91,26 +91,28 @@
 </div>
 
 @Html.Partial("_AddEditModal.cshtml")
-@Html.Partial("_ImportExcelModal")
-
+@Html.Partial("_ImportExcelModal.cshtml")
+@Html.Partial("_QuantityManagement.cshtml")
 <script id="table-template" type="x-tmpl-mustache">
     <tr>
-        <th scope="row">
-            @if ((await authorizationService.AuthorizeAsync(User, "PRODUCT", Operations.Update)).Succeeded)
-            {
-                <button class="btn btn-sm btn-edit" data-id="{{Id}}"><i class="fa fa-pencil"></i></button>
-            }
-            @if ((await authorizationService.AuthorizeAsync(User, "PRODUCT", Operations.Delete)).Succeeded)
-            {
-                <button class="btn btn-sm btn-danger btn-delete" data-id="{{Id}}"><i class="fa fa-trash"></i></button>
-            }
-        </th>
         <td>{{Name}}</td>
         <td>{{CategoryName}}</td>
         <td>{{Price}}</td>
         <td>{{{Image}}}</td>
         <td>{{CreatedDate}}</td>
         <td>{{{Status}}}</td>
+        <th scope="row">
+            @if ((await authorizationService.AuthorizeAsync(User, "PRODUCT", Operations.Update)).Succeeded)
+            {
+                <button class="btn btn-sm btn-edit" data-id="{{Id}}"><i class="fa fa-pencil"></i></button>
+                <a href="#" data-id="{{Id}}" class="btn btn-xs btn-quantity"><i class="fa fa-hourglass-start"></i></a>
+            }
+            @if ((await authorizationService.AuthorizeAsync(User, "PRODUCT", Operations.Delete)).Succeeded)
+            {
+                <button class="btn btn-sm btn-danger btn-delete" data-id="{{Id}}"><i class="fa fa-trash"></i></button>
+            }
+
+        </th>
     </tr>
 </script>
 
@@ -118,6 +120,7 @@
     <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
     <script src="~/lib/jQuery-EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/app/controllers/product/quantityManagement.js" asp-append-version="true"></script>
     <script src="~/app/controllers/product/index.js" asp-append-version="true"></script>
     <script>
         productController.initailize();

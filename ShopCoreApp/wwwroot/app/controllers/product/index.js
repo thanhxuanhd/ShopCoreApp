@@ -1,9 +1,11 @@
 ﻿var productController = (function () {
+
     var initailize = function () {
         loadCategorys();
         loadData();
         registerEvent();
         registerControls();
+        quantityManagementController.initailize();
     };
 
     var registerEvent = function () {

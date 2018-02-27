@@ -25,5 +25,9 @@ namespace ShopCoreApp.Service.Interfaces
         void ImportExcel(string filePath, int categoryId);
 
         List<ProductExportViewModel> ExportProduct(int? categoryId);
+
+        void AddQuantity(int productId, List<ProductQuantityViewModel> quantities);
+
+        List<ProductQuantityViewModel> GetQuantities(int productId);
     }
 }

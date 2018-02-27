@@ -24,6 +24,7 @@ namespace ShopCoreApp.Service.Implementation
         private readonly ITagRepository _tagRepository;
         private readonly IProductTagRepository _productTagRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IProductQuantityRepository _productQuantityRepository;
 
         public void Dispose()
         {
@@ -32,12 +33,15 @@ namespace ShopCoreApp.Service.Implementation
 
         #region Ctor
 
-        public ProductService(IProductRepository productRepository, IUnitOfWork unitOfWork, IProductTagRepository productTagRepository, ITagRepository tagRepository)
+        public ProductService(IProductRepository productRepository, IUnitOfWork unitOfWork, 
+            IProductTagRepository productTagRepository, ITagRepository tagRepository,
+            IProductQuantityRepository productQuantityRepository)
         {
             _productRepository = productRepository;
             _unitOfWork = unitOfWork;
             _tagRepository = tagRepository;
             _productTagRepository = productTagRepository;
+            _productQuantityRepository = productQuantityRepository;
         }
 
         #endregion Ctor
@@ -211,6 +215,26 @@ namespace ShopCoreApp.Service.Implementation
             }
 
             return query.ProjectTo<ProductExportViewModel>().ToList();
+        }
+
+        public void AddQuantity(int productId, List<ProductQuantityViewModel> quantities)
+        {
+            _productQuantityRepository.RemoveMultiple(_productQuantityRepository.FindAll(x => x.ProductId == productId).ToList());
+            foreach (var quantity in quantities)
+            {
+                _productQuantityRepository.Add(new ProductQuantity()
+                {
+                    ProductId = productId,
+                    ColorId = quantity.ColorId,
+                    SizeId = quantity.SizeId,
+                    Quantity = quantity.Quantity
+                });
+            }
+        }
+
+        public List<ProductQuantityViewModel> GetQuantities(int productId)
+        {
+            return _productQuantityRepository.FindAll(x => x.ProductId == productId).ProjectTo<ProductQuantityViewModel>().ToList();
         }
     }
 }
