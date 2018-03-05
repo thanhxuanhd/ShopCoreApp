@@ -211,6 +211,36 @@ namespace ShopCoreApp.Areas.Admin.Controllers
             return new OkObjectResult(quantities);
         }
 
+        [HttpPost]
+        public IActionResult SaveImages(int productId, string[] images)
+        {
+            _productService.AddImages(productId, images);
+            _productService.Save();
+            return new OkObjectResult(images);
+        }
+
+        [HttpGet]
+        public IActionResult GetImages(int productId)
+        {
+            var images = _productService.GetImages(productId);
+            return new OkObjectResult(images);
+        }
+
+        [HttpPost]
+        public IActionResult SaveWholePrice(int productId, List<WholePriceViewModel> wholePrices)
+        {
+            _productService.AddWholePrice(productId, wholePrices);
+            _productService.Save();
+            return new OkObjectResult(wholePrices);
+        }
+
+        [HttpGet]
+        public IActionResult GetWholePrices(int productId)
+        {
+            var wholePrices = _productService.GetWholePrices(productId);
+            return new OkObjectResult(wholePrices);
+        }
+
         #endregion AJAX API
     }
 }

@@ -25,7 +25,8 @@ namespace ShopCoreApp.Service.Implementation
         private readonly IProductTagRepository _productTagRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IProductQuantityRepository _productQuantityRepository;
-
+        private readonly IWholePriceRepository _wholePriceRepository;
+        private readonly IProductImageRepository _productImageRepository;
         public void Dispose()
         {
             GC.SuppressFinalize(this);
@@ -35,13 +36,17 @@ namespace ShopCoreApp.Service.Implementation
 
         public ProductService(IProductRepository productRepository, IUnitOfWork unitOfWork, 
             IProductTagRepository productTagRepository, ITagRepository tagRepository,
-            IProductQuantityRepository productQuantityRepository)
+            IProductQuantityRepository productQuantityRepository,
+            IWholePriceRepository wholePriceRepository,
+            IProductImageRepository productImageRepository)
         {
             _productRepository = productRepository;
             _unitOfWork = unitOfWork;
             _tagRepository = tagRepository;
             _productTagRepository = productTagRepository;
             _productQuantityRepository = productQuantityRepository;
+            _wholePriceRepository = wholePriceRepository;
+            _productImageRepository = productImageRepository;
         }
 
         #endregion Ctor
@@ -235,6 +240,61 @@ namespace ShopCoreApp.Service.Implementation
         public List<ProductQuantityViewModel> GetQuantities(int productId)
         {
             return _productQuantityRepository.FindAll(x => x.ProductId == productId).ProjectTo<ProductQuantityViewModel>().ToList();
+        }
+
+        public List<ProductImageViewModel> GetImages(int productId)
+        {
+            return _productImageRepository.FindAll(x => x.ProductId == productId)
+                .ProjectTo<ProductImageViewModel>().ToList();
+        }
+
+        public void AddImages(int productId, string[] images)
+        {
+            _productImageRepository.RemoveMultiple(_productImageRepository.FindAll(x => x.ProductId == productId).ToList());
+            foreach (var image in images)
+            {
+                _productImageRepository.Add(new ProductImage()
+                {
+                    Path = image,
+                    ProductId = productId,
+                    Caption = string.Empty
+                });
+            }
+
+        }
+        public void AddWholePrice(int productId, List<WholePriceViewModel> wholePrices)
+        {
+            _wholePriceRepository.RemoveMultiple(_wholePriceRepository.FindAll(x => x.ProductId == productId).ToList());
+            foreach (var wholePrice in wholePrices)
+            {
+                _wholePriceRepository.Add(new WholePrice()
+                {
+                    ProductId = productId,
+                    FromQuantity = wholePrice.FromQuantity,
+                    ToQuantity = wholePrice.ToQuantity,
+                    Price = wholePrice.Price
+                });
+            }
+        }
+
+        public List<WholePriceViewModel> GetWholePrices(int productId)
+        {
+            return _wholePriceRepository.FindAll(x => x.ProductId == productId).ProjectTo<WholePriceViewModel>().ToList();
+        }
+
+        public List<ProductViewModel> GetLastest(int top)
+        {
+            return _productRepository.FindAll(x => x.Status == Status.Active).OrderByDescending(x => x.DateCreated)
+                .Take(top).ProjectTo<ProductViewModel>().ToList();
+        }
+
+        public List<ProductViewModel> GetHotProduct(int top)
+        {
+            return _productRepository.FindAll(x => x.Status == Status.Active && x.HotFlag == true)
+                .OrderByDescending(x => x.DateCreated)
+                .Take(top)
+                .ProjectTo<ProductViewModel>()
+                .ToList();
         }
     }
 }

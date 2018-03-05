@@ -6,6 +6,7 @@
         registerEvent();
         registerControls();
         quantityManagementController.initailize();
+        imageManagerProductController.initailize();
     };
 
     var registerEvent = function () {

@@ -94,6 +94,8 @@ namespace ShopCoreApp
             services.AddTransient<IColorRepository, ColorRepository>();
             services.AddTransient<ISizeRepository, SizeRepository>();
             services.AddTransient<IProductQuantityRepository, ProductQuantityRepository>();
+            services.AddTransient<IProductImageRepository, ProductImageRepository>();
+            services.AddTransient<IWholePriceRepository, WholePriceRepository>();
 
             // Config Service
             services.AddTransient<IProductCategoryService, ProductCategoryService>();

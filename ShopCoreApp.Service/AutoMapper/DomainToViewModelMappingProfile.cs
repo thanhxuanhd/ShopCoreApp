@@ -26,6 +26,8 @@ namespace ShopCoreApp.Service.AutoMapper
             CreateMap<Color, ColorViewModel>();
             CreateMap<Size, SizeViewModel>();
             CreateMap<ProductQuantity, ProductQuantityViewModel>();
+            CreateMap<ProductImage, ProductImageViewModel>();
+            CreateMap<WholePrice, WholePriceViewModel>();
         }
     }
 }
