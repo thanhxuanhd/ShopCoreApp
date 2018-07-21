@@ -197,17 +197,17 @@
                             Status: app.getStatus(item.Status),
                             Price: app.formatNumber(item.Price)
                         });
-
-                        $('#lblTotalRecords').text(response.RowCount);
-
-                        if (render !== '') {
-                            $('#tblContent').html(render);
-                        }
-
-                        wrapPaging(response.RowCount, function () {
-                            loadData();
-                        }, isPageChanged);
                     });
+
+                    $('#lblTotalRecords').text(response.RowCount);
+
+                    if (render !== '') {
+                        $('#tblContent').html(render);
+                    }
+
+                    wrapPaging(response.RowCount, function () {
+                        loadData();
+                    }, isPageChanged);
                 }
             },
             error: function (error) {

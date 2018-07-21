@@ -2,7 +2,7 @@
   "name": "asp.net",
   "private": true,
   "dependencies": {
-    "bootstrap": "~3.3.7",
+    "bootstrap": "4.0.0",
     "bootstrap-daterangepicker": "2.1.27",
     "font-awesome": "~4.7.0",
     "nprogress": "~0.2.0",
@@ -10,7 +10,7 @@
     "iCheck": "~1.0.2",
     "bootstrap-progressbar": "~0.9.0",
     "jqvmap": "~1.5.1",
-    "jquery": "~3.2.1",
+    "jquery": "~3.3.1",
     "jquery-validation": "~1.17.0",
     "jquery-validation-unobtrusive": "~3.2.6",
     "gentelella": "~1.4.0",
@@ -31,6 +31,7 @@
     "jQuery-EasyUI": "~1.5.3",
     "ckeditor": "~4.8.0",
     "jquery-treegrid": "~0.3.0",
-    "bootstrap-datepicker": "~1.7.1"
+    "bootstrap-datepicker": "~1.7.1",
+    "popper.js": "^1.14.3"
   }
 }
