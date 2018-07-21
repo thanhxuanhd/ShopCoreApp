@@ -47,7 +47,7 @@
                     $('#txtSeoDescriptionProductCategory').val(data.SeoDescription);
                     $('#txtSeoAliasProductCategory').val(data.SeoAlias);
                     $('#txtImageProductCategory').val(data.Image);
-                    $('#ckStatusProductCategory').prop('checked', data.Status == 1);
+                    $('#ckStatusProductCategory').prop('checked', data.Status === 1);
                     $('#ckShowHomeProductCategory').prop('checked', data.HomeFlag);
                     $('#modalAddEdit').modal('show');
                     app.stopLoading();
@@ -73,9 +73,9 @@
                     seoDescription: $('#txtSeoDescriptionProductCategory').val(),
                     seoPageTitle: $('#txtSeoPageTitleProductCategory').val(),
                     seoAlias: $('#txtSeoAliasProductCategory').val(),
-                    status: $('#ckStatusProductCategory').prop('checked') == true ? 1 : 0,
-                    showHome: $('#ckShowHomeProductCategory').prop('checked'),
-                }
+                    status: $('#ckStatusProductCategory').prop('checked') === true ? 1 : 0,
+                    showHome: $('#ckShowHomeProductCategory').prop('checked')
+                };
                 $.ajax({
                     method: 'POST',
                     url: '/admin/productCategories/SaveProductCategory',
@@ -206,7 +206,6 @@
                                         value: i
                                     });
                                 });
-                                debugger;
                                 // Update to Database
                                 $.ajax({
                                     url: '/Admin/productCategories/UpdateParentId',
@@ -290,7 +289,7 @@
         $('#txtSeoAliasProductCategory').val('');
         $('#ckStatusProductCategory').prop('checked', true);
         $('#ckShowHomeroductCategory').prop('checked', false);
-    }
+    };
 
     return {
         initailize: initailize,

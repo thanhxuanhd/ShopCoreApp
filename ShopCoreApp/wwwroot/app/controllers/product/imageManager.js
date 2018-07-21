@@ -85,7 +85,7 @@
                 var render = '';
                 $.each(response, function (i, item) {
                     console.log(item);
-                    render += '<div class="col-md-3"><img width="100" src="/' + item.Path + '"><br/><a href="#" class="btn-delete-image">Xóa</a></div>'
+                    render += '<div class="col-md-3"><img width="100" src="/' + item.Path + '"><br/><a href="#" class="btn-delete-image">Xóa</a></div>';
                 });
                 $('#image-list').html(render);
                 clearFileInput($("#fileImage"));

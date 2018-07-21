@@ -94,6 +94,7 @@
 @Html.Partial("_ImportExcelModal.cshtml")
 @Html.Partial("_QuantityManagement.cshtml")
 @Html.Partial("_ImageManagement.cshtml")
+@Html.Partial("_WholePriceManagement")
 <script id="table-template" type="x-tmpl-mustache">
     <tr>
         <td>{{Name}}</td>
@@ -108,6 +109,7 @@
                 <button class="btn btn-sm btn-edit" data-id="{{Id}}"><i class="fa fa-pencil"></i></button>
                 <a href="#" data-id="{{Id}}" class="btn btn-xs btn-quantity"><i class="fa fa-hourglass-start"></i></a>
                 <a href="#" data-id="{{Id}}" class="btn btn-xs btn-images"><i class="fa fa-image"></i></a>
+                <a href="#" data-id="{{Id}}" class="btn btn-xs btn-whole-price"><i class="fa fa-dollar"></i></a>
             }
             @if ((await authorizationService.AuthorizeAsync(User, "PRODUCT", Operations.Delete)).Succeeded)
             {
@@ -124,6 +126,7 @@
     <script src="~/lib/jQuery-EasyUI/jquery.easyui.min.js"></script>
     <script src="~/app/controllers/product/quantityManagement.js" asp-append-version="true"></script>
     <script src="~/app/controllers/product/imageManager.js" asp-append-version="true"></script>
+    <script src="~/app/controllers/product/wholePriceManager.js" asp-append-version="true"></script>
     <script src="~/app/controllers/product/index.js" asp-append-version="true"></script>
     <script>
         productController.initailize();
